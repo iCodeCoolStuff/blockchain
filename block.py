@@ -1,12 +1,18 @@
 import hashlib
 import time
 
+from transaction import Transaction
+
+from Crypto.Signature import DSS
+
+
 class Block(object):
     def __init__(self, timestamp, last_hsh, hsh, data):
         self.timestamp = timestamp
         self.last_hsh   = last_hsh
         self.hsh       = hsh
         self.data      = data
+        self.transactions = []
 
     def __str__(self):
         return f'Block -\n'\
@@ -14,6 +20,12 @@ class Block(object):
             + f'\tLast Hash: {self.last_hsh[0:10]}\n' \
             + f'\tHash: {self.hsh[0:10]}\n' \
             + f'\tData: {self.data}'
+
+    def add_transaction(txn):
+        if txn.verify():
+            self.transactions.append(txn)
+            return True
+        return False
 
 
 class GenesisBlock(Block):
